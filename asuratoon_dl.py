@@ -59,8 +59,8 @@ def printOptions():
     print("Options:")
     print("--help | -h: Displays this message")
     print("--path | -p: Path to download to (--path <DIR>)")
-    print("--cbz: Download as a CBZ (Currently all folders are converted to CBZ by default)")
-    print("--LINK: Create a shortcut file")
+    print("--cbz: Download as a CBZ")
+    print("--link: Create a shortcut file")
     print("")
 
 
