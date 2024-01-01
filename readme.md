@@ -6,7 +6,9 @@
 
 > I have not tested linux!
 
-The script has directory mapping optimised for windows that might be incompatable with linux. (i.e. using "\\\\" instead of "/")
+The script has directory mapping optimised for windows that might be incompatable on linux. (i.e. using "\\\\" instead of "/")
+
+If you find any bugs, issues or have a feature request, open a request. I will respond in an unknown ammount of time... probably...
 
 ## Features
 
