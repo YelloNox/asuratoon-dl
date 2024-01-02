@@ -8,8 +8,11 @@ import sys
 from bs4 import BeautifulSoup
 
 dl_log = "download_log.txt"
+tmp_dl_log = ""
+distro_nav = "\\"
 dl_path = ""
 book_title = ""
+book_titles = []
 url = ""
 is_cbz = False
 create_link = False
@@ -19,55 +22,76 @@ create_link = False
 
 def checkOptions():
     userInput = sys.argv
+    is_updating = False
     print("")
 
-    if 'http' in userInput[-1]:
-        global url
-        url = userInput[-1]
-    else:
-        print("Missing URL (Example: *_dl.py --path /path/to/dir https://example.com)")
-        exit()
-    
-    
     i = 0
     while i < len(userInput):
         item = userInput[i]
+
         if item == "--help" or item == "-h":
+            print(f"Printing options...")
             printOptions()
             exit()
         elif item == "--cbz":
             global is_cbz
             is_cbz = True
-            print(f"    {item} Enabled (Converting folders to CBZ)")
+            print(f"\t{item} Enabled (Converting folders to CBZ)\n")
         elif item == "--path" or item == "-p":
             global dl_path
-            dl_path = userInput[i+1] + "\\"
-            print(f"    Path set to {dl_path}")
+            dl_path = userInput[i+1] + distro_nav
+            print(f"\tPath set to: {userInput[i+1]}\n")
         elif item == "--link" or item == "-l":
             global create_link
             create_link = True
-            print(f"    {item} Enabled (Will create shortcut to URL)")
+            print(f"\t{item} Enabled (Will create shortcut to URL)\n")
+        elif item == "--update":
+            print(f"\t{item} Enabled: Updating...\n")
+            is_updating = True
+        elif item == "--update-help":
+            printUpdateHelp()
+            exit()
         i += 1
-        
-    print("")
+
+    if 'http' in userInput[-1]:
+        global url
+        url = userInput[-1]
+    elif is_updating:
+        updateSource()
+        exit()
+    else:
+        print("Missing URL (Example: *_dl.py --path /path/to/dir https://example.com)")
+        exit()
 
 
 def printOptions():
-    print("")
-    print("Usage: *_dl.py --path /path/to/dir https://example.com")
-    print("")
-    print("Options:")
-    print("--help | -h: Displays this message")
-    print("--path | -p: Path to download to (--path <DIR>)")
-    print("--cbz: Download as a CBZ")
-    print("--link: Create a shortcut file")
-    print("")
+    print(f"")
+    print(f"Usage: *_dl.py --path /path/to/dir https://example.com")
+    print(f"")
+    print(f"Options:")
+    print(f"\t--help | -h: Displays this message\n")
+    print(f"\t--path | -p: Path to download to (--path <DIR>)\n")
+    print(f"\t--cbz: Download as a CBZ\n")
+    print(f"\t--link: Create a shortcut file\n")
+    print(f"\t--update: Updates all downloads to latest chapter")
+    print(f"\t\t--update-help for more information\n")
+    print(f"")
+
+
+def printUpdateHelp():
+    print(f"")
+    print(f"Usage: *_dl.py --update")
+    print(f"")
+    print(f"Options:")
+    print(f"\t--update: Updates all downloads to latest chapter")
+    print(f"\t\t--update-help for more information\n")
+    print(f"")
 
 
 # Options {END}
-checkOptions()
 
 # Creates working directory and log file
+
 
 def createShortcut(path):
     shortcut_name = f"URL - {book_title}.url"
@@ -84,16 +108,17 @@ def createShortcut(path):
 
     print(f"Shortcut Created: {shortcut_path}")
 
+# Create the path and set dl_log locaiton
 def createDir():
     getTitle()
-    global dl_log
-    log_path = dl_path + book_title + "\\"
-    dl_log = log_path + dl_log
+    global tmp_dl_log
+    log_path = dl_path + book_title + distro_nav
+    tmp_dl_log = log_path + dl_log
     print(f"Creating Path: {log_path}")
     os.makedirs(log_path, exist_ok=True)
-    print(f"Creating log file: {dl_log}")
+    print(f"Creating log file: {tmp_dl_log}")
     try:
-        with open(dl_log, 'x'):
+        with open(tmp_dl_log, 'x'):
             pass
     except FileExistsError:
         print(f"Log file already exists: Skipping...")
@@ -101,7 +126,6 @@ def createDir():
         print(f"Error: {e}")
     if create_link:
         createShortcut(log_path)
-
 
 def scanPage(curUrl):
     print(f"Scanning page {curUrl}")
@@ -122,6 +146,7 @@ def getTitle():
 
 
 def chapList():
+    print(f"Finding chapters: {url}")
     response = requests.get(url)
     if response.status_code == 200:
         soup = BeautifulSoup(response.text, 'html.parser')
@@ -155,8 +180,7 @@ def lastChap(links):
 
 def downloadUnique(curChap, links):
     if lastChap(links) == curChap:
-        print("---------------- No more chapters ----------------\n")
-        exit()
+        return
     for link in links[curChap:]:
         response = requests.get(link)
         if response.status_code == 200:
@@ -166,7 +190,7 @@ def downloadUnique(curChap, links):
 
 
 def fakeDownloadImages(page):
-    print(f"Downloading: {page}")
+    print(f"/nDownloading: {page}")
     logCompleted(page)
 
 # Download all images in a page under a div
@@ -229,7 +253,7 @@ def convertToCBZ(path):
 
 
 def logCompleted(page):
-    with open(dl_log, "a") as f:
+    with open(tmp_dl_log, "a") as f:
         f.write(f"{page}\n")
 
 # Finds the latest chapter
@@ -237,7 +261,7 @@ def logCompleted(page):
 
 def lastDownload():
     try:
-        with open(dl_log, "r") as f:
+        with open(tmp_dl_log, "r") as f:
             lines = f.readlines()
 
         if lines != []:
@@ -253,11 +277,76 @@ def lastDownload():
         print(e)
 
 
-def main():
+def listDir():
+    global book_titles
+    global dl_path
+    print(f"Items:")
+
+    if dl_path == "":
+        dl_path = os.getcwd() + distro_nav
+        
+    print(f"Current Path {dl_path}")
+        
+    i = 0
+    if os.path.exists(dl_path):
+        file_list = os.listdir(dl_path)
+        file_list = [item for item in file_list if not (item.startswith('.') or item.endswith('.bat'))]
+        for file_name in file_list:
+            book_titles.append(file_name)
+            print(f"\t{i+1}: {file_name}")
+            i += 1
+    else:
+        print(f"{dl_path} does not exist")
+    print("")
+
+def getLinkFromLog(book_dir):
+    cur_book_dir = dl_path + book_dir + distro_nav + dl_log
+    print("Checking: " + cur_book_dir)
+    print(f"dl_log: {dl_log}")
+    with open(cur_book_dir, 'r') as f:
+        links = f.readlines()
+    print("")
+    return links[0]
+
+def getTopLink():
+    print(f"Finding head source of: {url}")
+    response = requests.get(url)
+    if response.status_code == 200:
+        soup = BeautifulSoup(response.text, 'html.parser')
+        div = soup.find('div', {'class': 'allc'})
+        if div:
+            links = div.find_all('a', href=True)
+            links.reverse()
+            linkList = []
+            for link in links:
+                href = link.get('href')
+                linkList.append(href)
+            print(f"Found: {linkList[0]}")
+            return linkList[0]
+        else:
+            print("firstChap: Missing div")
+    else:
+        print("firstChap: Missing Button")
+
+
+def downloadSource():
     createDir()
     links = chapList()
     last_downlaod = lastDownload()
     downloadUnique(last_downlaod, links)
+    print("---------------- No more chapters ----------------\n")
 
 
-main()
+def updateSource():
+    global url
+    listDir()
+    for i in range(len(book_titles)):
+        url = getLinkFromLog(book_titles[i])
+        url = getTopLink()
+        downloadSource()
+        
+
+
+# Execution
+checkOptions()
+downloadSource()

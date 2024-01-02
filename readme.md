@@ -1,4 +1,4 @@
-# asuratoon-dl
+# asuratoon-dl / Asura Scans
 
 > Download full books from asuratoon.com
 
@@ -21,14 +21,20 @@ If you find any bugs, issues or have a feature request, open a request. I will r
 ## Usage
 
 ```
-Usage: \*\_dl.py --path /path/to/dir --cbz https://example.com
+Usage: *_dl.py --path /path/to/dir --cbz https://example.com
 
 Options:
 
-    --help | -h: Displays this message
-    --path <url> | -p <url>: Path files save under
-    --cbz: Archive as CBZ
-    --link: Create a shortcut file
+        --help | -h: Displays this message
+
+        --path | -p: Path to download to (--path <DIR>)
+
+        --cbz: Download as a CBZ
+
+        --link: Create a shortcut file
+
+        --update: Updates all downloads to latest chapter
+                --update-help for more information
 
 ```
 
