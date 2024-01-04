@@ -34,7 +34,7 @@ Options:
         --link: Create a shortcut file
 
         --update: Updates all downloads to latest chapter
-                --update-help for more information
+                --update-help: For more information
 
 ```
 
