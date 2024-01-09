@@ -1,6 +1,6 @@
 # asuratoon-dl / Asura Scans
 
-> Download full books from asuratoon.com
+> Download full comics from asuratoon.com
 
 ## 🗒️ Note: Currently only works on Windows :(
 
@@ -12,16 +12,28 @@ If you find any bugs, issues or have a feature request, open a request. I will r
 
 ## ✅ Features
 
-- Downlaods Entire source from chapter 1 to END
-- Resume download where you left off (skipping previous downloads)
-- Ability to save as image folder or archive to CBZ
-- CLI options for scripting
-- Create shortcut to webpage in path (for windows)
+-   Downlaods Entire comic: START to END
+-   Download all new chapters in one command
+-   Save chapters as image folder or CBZ archive
+-   CLI options for scripting
+-   Create quick link to webpage in path (Windows)
+
+## ⬇️ Install
+
+Install and run:
+
+1. Clone this repo to desired directory: `git clone https://github.com/YelloNolo/asuratoon-dl`
+2. Create venv env: `python -m venv venv`
+3. Activate venv: `.\venv\Scripts\activate.bat`
+4. Install requirements: `pip install -r requirements.txt`
+5. Run script: [#Usage](https://github.com/YelloNolo/asuratoon-dl?tab=readme-ov-file#Usage)
 
 ## 🪴 Usage
 
-```
-Usage: *_dl.py --path /path/to/dir --cbz https://example.com
+Activate Python venv: `.\venv\Scripts\activate.bat`
+
+```bash
+Usage: asuratoon_dl.py --path /path/to/dir --cbz https://example.com
 
 Options:
 
@@ -38,12 +50,29 @@ Options:
 
 ```
 
-## ⬇️ Install
+## ✅ ToDo
 
-Install and run:
+-   [ ] Add a network throttle
+-   [ ] Add a network cap
 
-1. Clone this repo to desired directory: `git clone https://github.com/YelloNolo/asuratoon-dl`
-2. Create venv env: `python -m venv venv`
-3. Activate venv: `.\venv\Scripts\activate.bat`
-4. Install requirements: `pip install -r requirements.txt`
-5. Run script: [#Usage](https://github.com/YelloNolo/asuratoon-dl?tab=readme-ov-file#Usage)
+## ❓ Q&A
+
+### Why don't I use multiprocessing to download multiple images at once?
+
+I do not want to burden the host of the server
+
+### Will there be support for other sources?
+
+Maybe. I have no current plans, but I made the script flexable for more sources. If there are any requests, feel free to open a [discussion](https://github.com/YelloNolo/asuratoon-dl/discussions).
+
+## 🌟 Thanks
+
+-   [asuratoon.com](https://asuratoon.com/)
+
+## 🪪 License
+
+This project is licensed under the terms of the MIT License. See the [LICENSE](LICENSE) file for details.
+
+### MIT License
+
+The MIT License is a permissive open-source license that allows you to use, modify, and distribute this software freely, as long as you include the original copyright notice and disclaimers.
