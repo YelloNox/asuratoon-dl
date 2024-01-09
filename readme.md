@@ -2,15 +2,15 @@
 
 > Download full books from asuratoon.com
 
-## Note: Currently only works with windows
+## 🗒️ Note: Currently only works on Windows :(
 
-> I have not tested linux!
+> I have not tested linux, but am working on an implementation!
 
 The script has directory mapping optimised for windows that might be incompatable on linux. (i.e. using "\\\\" instead of "/")
 
 If you find any bugs, issues or have a feature request, open a request. I will respond in an unknown ammount of time... probably...
 
-## Features
+## ✅ Features
 
 - Downlaods Entire source from chapter 1 to END
 - Resume download where you left off (skipping previous downloads)
@@ -18,7 +18,7 @@ If you find any bugs, issues or have a feature request, open a request. I will r
 - CLI options for scripting
 - Create shortcut to webpage in path (for windows)
 
-## Usage
+## 🪴 Usage
 
 ```
 Usage: *_dl.py --path /path/to/dir --cbz https://example.com
@@ -38,7 +38,7 @@ Options:
 
 ```
 
-## Install
+## ⬇️ Install
 
 Install and run:
 
