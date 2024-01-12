@@ -34,6 +34,7 @@ def checkOptions():
 
     i = 0
     while i < len(userInput):
+        global is_cbz, dl_path, create_link
         item = userInput[i]
 
         if item == "--help" or item == "-h":
@@ -41,15 +42,12 @@ def checkOptions():
             printOptions()
             exit()
         elif item == "--cbz":
-            global is_cbz
             is_cbz = True
             print(f"\t{item} Enabled (Converting folders to CBZ)\n")
         elif item == "--path" or item == "-p":
-            global dl_path
             dl_path = userInput[i+1] + distro_nav
             print(f"\tPath set to: {userInput[i+1]}\n")
         elif item == "--link" or item == "-l":
-            global create_link
             create_link = True
             print(f"\t{item} Enabled (Will create shortcut to URL)\n")
         elif item == "--update":
@@ -71,6 +69,8 @@ def checkOptions():
         exit()
 
 # I would make a txt document for this, but I don't know if someone wants the script without the luggage.
+
+
 def printOptions():
     print(f"")
     print(f"Usage: *_dl.py --path /path/to/dir https://example.com")
@@ -100,7 +100,7 @@ def printUpdateHelp():
 
 
 def checkDistro():
-    os_name = platform.system()
+    global distro_nav
     if os.name == 'nt':
         distro_nav == "\\"
     else:
