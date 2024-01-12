@@ -2,13 +2,11 @@
 
 > Download full comics from asuratoon.com
 
-## 🗒️ Note: Currently only works on Windows :(
-
-> I have not tested linux, but am working on an implementation!
-
-The script has directory mapping optimised for windows that might be incompatable on linux. (i.e. using "\\\\" instead of "/")
-
 If you find any bugs, issues or have a feature request, open a request. I will respond in an unknown ammount of time... probably...
+
+## 🗒️ Note: Currently only tested on Windows :(
+
+I have not tested linux, but the implementation should work!\
 
 ## ✅ Features
 
