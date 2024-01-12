@@ -17,7 +17,7 @@ url = ""
 is_cbz = False
 create_link = False
 
-# HTML content location
+# HTML Content Location (More informaiton in info.md)
 
 title_html = ('h1', {'class': 'entry-title'})
 chapter_html = ('div', {'id': 'chapterlist'})
@@ -26,7 +26,6 @@ top_link_html = ('div', {'class': 'allc'})
 
 
 # Options {START}
-
 
 def checkOptions():
     userInput = sys.argv
@@ -71,7 +70,7 @@ def checkOptions():
         print("Missing URL (Example: *_dl.py --path /path/to/dir https://example.com)")
         exit()
 
-
+# I would make a txt document for this, but I don't know if someone wants the script without the luggage.
 def printOptions():
     print(f"")
     print(f"Usage: *_dl.py --path /path/to/dir https://example.com")
@@ -96,6 +95,16 @@ def printUpdateHelp():
     print(f"")
 
 # Options {END}
+
+# Checks the current OS to set mapping to
+
+
+def checkDistro():
+    os_name = platform.system()
+    if os.name == 'nt':
+        distro_nav == "\\"
+    else:
+        distro_nav = "/"
 
 # Creates working directory and log file
 
@@ -137,11 +146,9 @@ def createDir():
         createShortcut(log_path)
 
 
-def scanPage(curUrl):
-    print(f"Scanning page {curUrl}")
-
-
 # Gets the book title from the webpage
+
+
 def getTitle():
     response = requests.get(url)
     if response.status_code == 200:
@@ -181,6 +188,7 @@ def chapList():
 def lastChap(links):
     last_line = links[-1]
     pattern = r'chapter-\d+'
+    # I don't remember why I did this, but it is important. I think...
     for i in range(2):
         curChap = re.findall(pattern, last_line)
         pattern = r'\d+'
@@ -361,5 +369,6 @@ def updateSource():
 
 
 # Execution
+checkDistro()
 checkOptions()
 downloadSource()
