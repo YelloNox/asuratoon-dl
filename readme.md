@@ -54,6 +54,7 @@ Options:
 
 -   [ ] Add a network throttle
 -   [ ] Add a network cap
+-   [ ] Add ".updateignore" file to ignore complete books
 
 ## ❓ Q&A
 

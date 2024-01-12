@@ -8,6 +8,7 @@ import sys
 from bs4 import BeautifulSoup
 
 dl_log = "download_log.txt"
+active_site = "asuratoon"
 tmp_dl_log = ""
 distro_nav = "\\"
 dl_path = ""
@@ -17,15 +18,8 @@ url = ""
 is_cbz = False
 create_link = False
 
-# HTML Content Location (More informaiton in info.md)
-
-title_html = ('h1', {'class': 'entry-title'})
-chapter_html = ('div', {'id': 'chapterlist'})
-image_html = ('div', {'class': 'entry-content'})
-top_link_html = ('div', {'class': 'allc'})
-
-
 # Options {START}
+
 
 def checkOptions():
     userInput = sys.argv
@@ -34,13 +28,17 @@ def checkOptions():
 
     i = 0
     while i < len(userInput):
-        global is_cbz, dl_path, create_link
+        global is_cbz, dl_path, create_link, active_site
         item = userInput[i]
 
         if item == "--help" or item == "-h":
             print(f"Printing options...")
             printOptions()
             exit()
+        elif item == "--site" or item == "-s":
+            # Not fully implemented
+            active_site = userInput[i+1].lower()
+            print(f"\t{item} Enabled (Active site set to: {active_site})\n")
         elif item == "--cbz":
             is_cbz = True
             print(f"\t{item} Enabled (Converting folders to CBZ)\n")
@@ -105,6 +103,28 @@ def checkDistro():
         distro_nav == "\\"
     else:
         distro_nav = "/"
+
+# Sets the html info to match the site (for future implementaiton of other sites)
+# More informaiton in info.md: HTML Content Location
+
+
+def setSite():
+    global title_html, chapter_html, image_html, top_link_html, global_pattern
+    if active_site == "asuratoon":
+        title_html = ('h1', {'class': 'entry-title'})
+        chapter_html = ('div', {'id': 'chapterlist'})
+        top_link_html = ('div', {'class': 'allc'})
+        image_html = ('div', {'class': 'entry-content'})
+        global_pattern = r'chapter-\d+'
+    elif active_site == "mamayuyu":
+        title_html = ('h1', {'class': 'entry-title'})
+        chapter_html = ('li', {'id': 'ceo_latest_comics_widget-3'})
+        top_link_html = ('p', {'id': 'breadcrumbs'})
+        image_html = ('div', {'class': 'entry-content'})
+        global_pattern = r'chapter-\d+'
+    else:
+        print("Error [setSite]: Invalid site selection")
+        exit()
 
 # Creates working directory and log file
 
@@ -187,12 +207,12 @@ def chapList():
 
 def lastChap(links):
     last_line = links[-1]
-    pattern = r'chapter-\d+'
+    pattern = global_pattern
     # I don't remember why I did this, but it is important. I think...
     for i in range(2):
         curChap = re.findall(pattern, last_line)
         pattern = r'\d+'
-    return int(curChap[1])
+    return int(curChap[-1])
 
 # Checks if last chapter was allready downloaded, if not, checks link, then requests download
 
@@ -285,11 +305,11 @@ def lastDownload():
 
         if lines != []:
             last_line = lines[-1]
-            pattern = r'chapter-\d+'
+            pattern = global_pattern
             for i in range(2):
                 curChap = re.findall(pattern, last_line)
                 pattern = r'\d+'
-            return int(curChap[1])
+            return int(curChap[-1])
         else:
             return 0
     except Exception as e:
@@ -352,6 +372,8 @@ def getTopLink():
 
 
 def downloadSource():
+    checkDistro()
+    setSite()
     createDir()
     links = chapList()
     last_downlaod = lastDownload()
@@ -361,6 +383,8 @@ def downloadSource():
 
 def updateSource():
     global url
+    checkDistro()
+    setSite()
     listDir()
     for i in range(len(book_titles)):
         url = getLinkFromLog(book_titles[i])
@@ -369,6 +393,5 @@ def updateSource():
 
 
 # Execution
-checkDistro()
 checkOptions()
 downloadSource()
