@@ -53,6 +53,8 @@ Options:
 -   [ ] Add a network throttle
 -   [ ] Add a network cap
 -   [ ] Add ".updateignore" file to ignore complete books
+-   [ ] Add metadata to csv
+-   [ ] Add cover download and add to metadata (if downloaded)
 
 ## ❓ Q&A
 
