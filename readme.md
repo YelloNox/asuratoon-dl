@@ -56,6 +56,8 @@ Options:
 -   [ ] Add metadata to csv
 -   [ ] Add cover download and add to metadata (if downloaded)
 
+> Sticky-Note For Later: https://pypi.org/project/pycbzhelper/
+
 ## ❓ Q&A
 
 ### Why don't I use multiprocessing to download multiple images at once?
