@@ -17,6 +17,14 @@ url = ""
 is_cbz = False
 create_link = False
 
+# HTML content location
+
+title_html = ('h1', {'class': 'entry-title'})
+chapter_html = ('div', {'id': 'chapterlist'})
+image_html = ('div', {'class': 'entry-content'})
+top_link_html = ('div', {'class': 'allc'})
+
+
 # Options {START}
 
 
@@ -87,7 +95,6 @@ def printUpdateHelp():
     print(f"\t\t--update-help for more information\n")
     print(f"")
 
-
 # Options {END}
 
 # Creates working directory and log file
@@ -109,6 +116,8 @@ def createShortcut(path):
     print(f"Shortcut Created: {shortcut_path}")
 
 # Create the path and set dl_log locaiton
+
+
 def createDir():
     getTitle()
     global tmp_dl_log
@@ -127,15 +136,17 @@ def createDir():
     if create_link:
         createShortcut(log_path)
 
+
 def scanPage(curUrl):
     print(f"Scanning page {curUrl}")
 
 
+# Gets the book title from the webpage
 def getTitle():
     response = requests.get(url)
     if response.status_code == 200:
         soup = BeautifulSoup(response.text, 'html.parser')
-        div = soup.find('h1', {'class': 'entry-title'})
+        div = soup.find(title_html[0], title_html[1])
         global book_title
         book_title = div.text
         book_title = book_title.replace(" ", "-")
@@ -150,7 +161,7 @@ def chapList():
     response = requests.get(url)
     if response.status_code == 200:
         soup = BeautifulSoup(response.text, 'html.parser')
-        div = soup.find('div', {'id': 'chapterlist'})
+        div = soup.find(chapter_html[0], chapter_html[1])
         if div:
             links = div.find_all('a', href=True)
             links.reverse()
@@ -203,7 +214,7 @@ def downloadImages(page):
     if response.status_code == 200:
         soup = BeautifulSoup(response.text, 'html.parser')
 
-        div = soup.find('div', class_='entry-content')
+        div = soup.find(image_html[0], image_html[1])
 
         if div:
 
@@ -284,13 +295,14 @@ def listDir():
 
     if dl_path == "":
         dl_path = os.getcwd() + distro_nav
-        
+
     print(f"Current Path {dl_path}")
-        
+
     i = 0
     if os.path.exists(dl_path):
         file_list = os.listdir(dl_path)
-        file_list = [item for item in file_list if not (item.startswith('.') or item.endswith('.bat'))]
+        file_list = [item for item in file_list if not (
+            item.startswith('.') or item.endswith('.bat'))]
         for file_name in file_list:
             book_titles.append(file_name)
             print(f"\t{i+1}: {file_name}")
@@ -298,6 +310,7 @@ def listDir():
     else:
         print(f"{dl_path} does not exist")
     print("")
+
 
 def getLinkFromLog(book_dir):
     cur_book_dir = dl_path + book_dir + distro_nav + dl_log
@@ -308,12 +321,13 @@ def getLinkFromLog(book_dir):
     print("")
     return links[0]
 
+
 def getTopLink():
     print(f"Finding head source of: {url}")
     response = requests.get(url)
     if response.status_code == 200:
         soup = BeautifulSoup(response.text, 'html.parser')
-        div = soup.find('div', {'class': 'allc'})
+        div = soup.find(top_link_html[0], top_link_html[1])
         if div:
             links = div.find_all('a', href=True)
             links.reverse()
@@ -344,7 +358,6 @@ def updateSource():
         url = getLinkFromLog(book_titles[i])
         url = getTopLink()
         downloadSource()
-        
 
 
 # Execution
