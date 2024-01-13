@@ -255,8 +255,8 @@ def downloadImages(page):
                 img_filename = os.path.basename(
                     urllib.parse.urlparse(img_url).path)
 
-                dl_folder = dl_path + book_title + \
-                    '\chapter-' + str(lastDownload() + 1)
+                dl_folder = dl_path + book_title + distro_nav + \
+                    'chapter-' + str(lastDownload() + 1)
                 os.makedirs(dl_folder, exist_ok=True)
 
                 with open(os.path.join(dl_folder, img_filename), 'wb') as img_file:

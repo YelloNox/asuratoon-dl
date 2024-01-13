@@ -2,11 +2,13 @@
 
 > Download full comics from asuratoon.com
 
-If you find any bugs, issues or have a feature request, open a request. I will respond in an unknown ammount of time... probably...
+If you find any bugs, issues or have a feature request, open a request. I will respond in "X" ammount of time... probably...
 
-## 🗒️ Note: Currently only tested on Windows :(
+## 🚀 Update: Linux Tested!!! 😊
 
-I have not tested linux, but the implementation should work!\
+Linux is fully implemented and operational.
+
+> ToDo: Make sure windows isn't fked!
 
 ## ✅ Features
 
@@ -50,6 +52,8 @@ Options:
 
 ## ✅ ToDo
 
+-   [x] Test Linux
+-   [ ] Add support for more sources (might make a seperate script or repo)
 -   [ ] Add a network throttle
 -   [ ] Add a network cap
 -   [ ] Add ".updateignore" file to ignore complete books
@@ -62,7 +66,7 @@ Options:
 
 ### Why don't I use multiprocessing to download multiple images at once?
 
-I do not want to burden the host of the server
+I do not want to burden the host of the server. They are allready doing a great service to the community!
 
 ### Will there be support for other sources?
 
