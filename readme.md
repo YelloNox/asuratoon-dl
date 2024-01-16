@@ -2,21 +2,16 @@
 
 > Download full comics from asuratoon.com
 
-If you find any bugs, issues or have a feature request, open a request. I will respond in "X" ammount of time... probably...
-
-## 🚀 Update: Linux Tested!!! 😊
-
-Linux is fully implemented and operational.
-
-> ToDo: Make sure windows isn't fked!
+If you find any bugs, issues or have a feature request, open a request. I will respond in "SOME" ammount of time... probably...
 
 ## ✅ Features
 
 -   Downlaods Entire comic: START to END
--   Download all new chapters in one command
+-   Download all new chapters in one command (--update)
 -   Save chapters as image folder or CBZ archive
 -   CLI options for scripting
--   Create quick link to webpage in path (Windows)
+-   Create quick link (shortcut) to webpage in directory (Windows)
+-   Works on both Windows and Linux
 
 ## ⬇️ Install
 
@@ -53,12 +48,12 @@ Options:
 ## ✅ ToDo
 
 -   [x] Test Linux
--   [ ] Add support for more sources (might make a seperate script or repo)
+-   [ ] Add support for more sources (might make a seperate script or repo) (In testing)
 -   [ ] Add a network throttle
 -   [ ] Add a network cap
--   [ ] Add ".updateignore" file to ignore complete books
--   [ ] Add metadata to csv
--   [ ] Add cover download and add to metadata (if downloaded)
+-   [ ] Add ".updateignore" to ignore specified books
+-   [ ] Add metadata to csv (If possible)
+-   [ ] Add download option for cover
 
 > Sticky-Note For Later: https://pypi.org/project/pycbzhelper/
 
