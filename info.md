@@ -23,9 +23,10 @@ You are able to specify a few different sources to download from. Here is the cu
 
 <sub> If you do not specify a source, asuratoon is used by default. </sub>
 
--   `asuratoon`
--   `mamayuyu`
--   `sssclasshunter`
+-   `asuratoon` for https://asuratoon.com
+-   `mangaread` for https://mangaread.org 
+-   `mamayuyu` for https://mamayuyu.online
+-   `sssclasshunter` for https://sssclasshunter.com
 -   coming soon... (or as I want/need them)
 
 ## 📝 Other Info

@@ -138,6 +138,13 @@ def setSite():
         image_html = ('div', {'class': 'entry-content'})
         global_pattern = r'chapter-\d+'
         return
+    elif active_site == "mangaread":
+        title_html = ('div', {'class': 'post-title'}, 1)
+        chapter_list_html = ('ul', {'class': 'main'})
+        top_link_html = ('div', {'class': 'nav-next'})
+        image_html = ('div', {'class': 'reading-content'})
+        global_pattern = r'chapter-\d+'
+        return
 
     print(f"Error [setSite] `{active_site}`: Invalid site selection!")
     exit()
@@ -194,11 +201,26 @@ def createDir():
 def getTitle():
     global book_title
     response = requests.get(url)
+    
+    hasParent=False
+    if len(title_html) >= 3:
+        hasParent=True
+    
     if response.status_code == 200:
         soup = BeautifulSoup(response.text, 'html.parser')
         div = soup.find(title_html[0], title_html[1])
+        if hasParent:
+            children = div.find_all(recursive=False)
+            print(f"children: {children}")
+            div = children[title_html[2]]
         book_title = div.text
         book_title = book_title.replace(" ", "-")
+        book_title = book_title.replace("\n", "")
+        if book_title.endswith("-"):
+            book_title_list = list(book_title)
+            book_title_list[-1] = ""
+            book_title = ''.join(book_title_list)
+        print(f"Obtained book title: {book_title}")
     else:
         print("Page Error [getTitle]:book_title")
 
@@ -225,7 +247,7 @@ def getChapList():
             print("firstChap: Missing div")
     else:
         print("firstChap: Missing Button")
-        
+
     print("Make sure --site|-s is set. More found in info.md")
     sys.exit()
 
