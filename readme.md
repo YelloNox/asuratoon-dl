@@ -45,8 +45,6 @@ Options:
 
         --cbz: Download as a CBZ
 
-        --link: Create a shortcut file
-
         --update: Updates all downloads to latest chapter
                 --update-help: For more information
 
@@ -55,6 +53,7 @@ Options:
 ## ✅ ToDo
 
 -   [x] Test Linux
+-   [ ] Test Linux... Again...
 -   [ ] Add support for more sources (might make a seperate script or repo) (In progress)
 -   [ ] Add a network throttle (and/or network cap (and/or image cap))
 -   [ ] Add ".updateignore" to ignore specified books
