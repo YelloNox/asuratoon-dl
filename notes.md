@@ -1,1 +1,0 @@
-fix --update not able to find current URL as log and URL are currently seperated and broke!
