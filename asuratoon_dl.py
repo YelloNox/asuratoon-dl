@@ -225,6 +225,9 @@ def getChapList():
             print("firstChap: Missing div")
     else:
         print("firstChap: Missing Button")
+        
+    print("Make sure --site|-s is set. More found in info.md")
+    sys.exit()
 
 
 def lastChap(links):

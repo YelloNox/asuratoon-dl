@@ -1,12 +1,13 @@
 # 📚 asuratoon-dl / Asura Scans
 
-# WARNING: Script getting major overhaul
-
-I would advise against downloading currently as it is very BROKE!
-
 > Download full comics from asuratoon.com (and other sources (kinda))
 
 If you find any bugs, issues or have a feature request, open a request. I will respond in "SOME" ammount of time... probably...
+
+## 💸 Note
+
+Linux is back to testing phase... New changes might break some things...
+
 
 ## ✅ Features
 
