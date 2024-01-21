@@ -201,11 +201,11 @@ def createDir():
 def getTitle():
     global book_title
     response = requests.get(url)
-    
-    hasParent=False
+
+    hasParent = False
     if len(title_html) >= 3:
-        hasParent=True
-    
+        hasParent = True
+
     if response.status_code == 200:
         soup = BeautifulSoup(response.text, 'html.parser')
         div = soup.find(title_html[0], title_html[1])
@@ -298,13 +298,16 @@ def downloadImages(page):
 
             for img in div.find_all('img'):
                 img_url = img.get('src')
-
+                img_url = img_url.strip() # There is a weird gap at the start of some links
                 if not img_url.startswith('http'):
                     img_url = urllib.parse.urljoin(url, img_url)
-                img_data = requests.get(img_url).content
+                    
+                img_response = requests.get(img_url)
+                img_response.raise_for_status()
+                img_data = img_response.content
+
                 img_filename = os.path.basename(
                     urllib.parse.urlparse(img_url).path)
-
                 dl_folder = dl_path + book_title + distro_nav + \
                     'chapter-' + str(getLastDownload() + 1)
                 os.makedirs(dl_folder, exist_ok=True)
