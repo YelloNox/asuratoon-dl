@@ -1,6 +1,10 @@
-# asuratoon-dl / Asura Scans
+# 📚 asuratoon-dl / Asura Scans
 
-> Download full comics from asuratoon.com
+# WARNING: Script getting major overhaul
+
+I would advise against downloading currently as it is very BROKE!
+
+> Download full comics from asuratoon.com (and other sources (kinda))
 
 If you find any bugs, issues or have a feature request, open a request. I will respond in "SOME" ammount of time... probably...
 
@@ -27,12 +31,14 @@ Install and run:
 
 Activate Python venv: `.\venv\Scripts\activate.bat`
 
-```bash
+```
 Usage: asuratoon_dl.py --path /path/to/dir --cbz https://example.com
 
 Options:
 
         --help | -h: Displays this message
+
+        --site | -s: Specify what site to download from (learn more in info.md)
 
         --path | -p: Path to download to (--path <DIR>)
 
@@ -48,9 +54,8 @@ Options:
 ## ✅ ToDo
 
 -   [x] Test Linux
--   [ ] Add support for more sources (might make a seperate script or repo) (In testing)
--   [ ] Add a network throttle
--   [ ] Add a network cap
+-   [ ] Add support for more sources (might make a seperate script or repo) (In progress)
+-   [ ] Add a network throttle (and/or network cap (and/or image cap))
 -   [ ] Add ".updateignore" to ignore specified books
 -   [ ] Add metadata to csv (If possible)
 -   [ ] Add download option for cover
