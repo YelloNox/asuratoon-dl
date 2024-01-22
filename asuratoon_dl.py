@@ -145,6 +145,7 @@ def setSite():
         image_html = ('div', {'class': 'reading-content'})
         global_pattern = r'chapter-\d+'
         return
+    # elif active_site == "manganato": - Tried, but site has SQL protection. Maybe another time.
 
     print(f"Error [setSite] `{active_site}`: Invalid site selection!")
     exit()
@@ -211,7 +212,7 @@ def getTitle():
         div = soup.find(title_html[0], title_html[1])
         if hasParent:
             children = div.find_all(recursive=False)
-            print(f"children: {children}")
+            print(f"children [getTitle:title_html]: {children}")
             div = children[title_html[2]]
         book_title = div.text
         book_title = book_title.replace(" ", "-")
@@ -253,7 +254,7 @@ def getChapList():
 
 
 def lastChap(links):
-    print(f"links{links}")
+    print(f"links: {links}")
     last_line = links[-1]
     pattern = global_pattern
     # I don't remember why I did this, but it is important. I think...
@@ -298,10 +299,10 @@ def downloadImages(page):
 
             for img in div.find_all('img'):
                 img_url = img.get('src')
-                img_url = img_url.strip() # There is a weird gap at the start of some links
+                img_url = img_url.strip()  # There is a weird gap at the start of some links
                 if not img_url.startswith('http'):
                     img_url = urllib.parse.urljoin(url, img_url)
-                    
+
                 img_response = requests.get(img_url)
                 img_response.raise_for_status()
                 img_data = img_response.content
@@ -355,6 +356,7 @@ def logCompleted(page):
 
 
 def getLastDownload():
+    print("Checking last downloads")
     try:
         with open(tmp_dl_log, "r") as f:
             lines = f.readlines()
@@ -477,11 +479,19 @@ def getTopLink():
 
     if tmp_home_link != False:
         return tmp_home_link
+    
+    hasParent = False
+    if len(top_link_html) >= 3:
+        hasParent = True
 
     response = requests.get(url)
     if response.status_code == 200:
         soup = BeautifulSoup(response.text, 'html.parser')
         div = soup.find(top_link_html[0], top_link_html[1])
+        if hasParent:
+            children = div.find_all(recursive=False)
+            print(f"children [getTopLink:top_link_html]: {children}")
+            div = children[title_html[2]]
         if div:
             links = div.find_all('a', href=True)
             links.reverse()
