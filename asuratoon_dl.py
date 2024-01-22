@@ -119,7 +119,7 @@ def setSite():
 
     if active_site == "asuratoon":
         title_html = ('h1', {'class': 'entry-title'})
-        chapter_list_html = ('div', {'id': 'chapterlist'})
+        chapter_list_html = ('ul', {'class': 'clstyle'})
         top_link_html = ('div', {'class': 'allc'})
         image_html = ('div', {'class': 'entry-content'})
         global_pattern = r'chapter-\d+'
@@ -154,11 +154,14 @@ def setSite():
 # Creates working directory and log file
 
 
-def createShortcut(path):
+def createShortcut(path, forceRecreate=False):
     shortcut_name = f"URL - {book_title}.url"
     shortcut_content = f"[InternetShortcut]\nURL={url}"
 
     shortcut_path = os.path.join(path, shortcut_name)
+    if forceRecreate:
+        if os.path.exists(shortcut_path):
+            os.remove(shortcut_path)
     try:
         with open(shortcut_path, "x") as url_shortcut:
             url_shortcut.write(shortcut_content)
@@ -167,13 +170,13 @@ def createShortcut(path):
     except Exception as e:
         print(f"Error: {e}")
 
-    print(f"Shortcut Created: {shortcut_path}")
+    print(f"Shortcut [createShortcut]: {shortcut_path}")
 
 
 # Create the path and set dl_log locaiton
 
 
-def createDir():
+def createDir(forceRecreateShortcut=False):
     getTitle()
     global tmp_dl_log
     if book_title == "":
@@ -191,6 +194,9 @@ def createDir():
         print(f"Log file already exists: Skipping...")
     except Exception as e:
         print(f"Error: {e}")
+        exit()
+    if forceRecreateShortcut:
+        createShortcut(log_path, True)
         exit()
     if create_link:
         createShortcut(log_path)
@@ -226,7 +232,7 @@ def getTitle(tmp_url=""):
             book_title = ''.join(book_title_list)
         print(f"Obtained book title: {book_title}")
     else:
-        print("Page Error [getTitle]:book_title")
+        print(f"Page Error [getTitle]: {book_title}")
 
 
 # Finds the link to the first chapter by navigating the title page
@@ -257,8 +263,15 @@ def getChapList(tmp_url=""):
     else:
         print("firstChap: Missing Button")
 
-    print("Make sure --site|-s is set. More found in info.md")
-    sys.exit()
+    print(f"\nSeems like the URL is old or corrupted. Please enter a new URL for: {book_title}")
+    resetChapterURLShortcut()
+    return getChapList()
+
+
+def resetChapterURLShortcut():
+    global url
+    url = input('Please enter new URL: ')
+    createDir(True)
 
 
 def lastChap(links):
@@ -429,17 +442,18 @@ def checkHomeLink(tmp_book_title=""):
         log_path = dl_path + tmp_book_title + distro_nav
     else:
         log_path = dl_path + book_title + distro_nav
-        
+
     print(f"\n[checkHomeLink] Using: {log_path}")
-    
+
     shortcut_file = getFileByExtension(".url", log_path)
-    
+
     print(f"[shortcut_file] set to: {shortcut_file}")
 
     with open(shortcut_file, 'r') as f:
         for line in f:
             shortcut_file_contents = line.strip()
-            print(f"Found [checkHomeLink:shortcut_file_contents]: {shortcut_file_contents}")
+            print(
+                f"Found [checkHomeLink:shortcut_file_contents]: {shortcut_file_contents}")
             if shortcut_file_contents.startswith('URL='):
                 break
 
