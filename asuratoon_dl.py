@@ -131,7 +131,7 @@ def setSite():
         image_html = ('div', {'class': 'entry-content'})
         global_pattern = r'chapter-\d+'
         return
-    elif active_site == "sssclasshunter":
+    elif active_site == "sssclasshunter" or active_site == "yourtalentismine":
         title_html = ('h1', {'class': 'entry-title'})
         chapter_list_html = ('ul', {'class': 'su-posts-list-loop'})
         top_link_html = ('a', {'class': 'home-link'})

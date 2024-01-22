@@ -27,6 +27,7 @@ You are able to specify a few different sources to download from. Here is the cu
 -   `mangaread` for https://mangaread.org 
 -   `mamayuyu` for https://mamayuyu.online
 -   `sssclasshunter` for https://sssclasshunter.com
+-   `yourtalentismine` for https://yourtalentismine.com
 -   coming soon... (or as I want/need them)
 
 ## 📝 Other Info
