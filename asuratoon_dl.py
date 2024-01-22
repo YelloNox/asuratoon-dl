@@ -356,7 +356,6 @@ def logCompleted(page):
 
 
 def getLastDownload():
-    print("Checking last downloads")
     try:
         with open(tmp_dl_log, "r") as f:
             lines = f.readlines()
