@@ -199,8 +199,11 @@ def createDir():
 # Gets the book title from the webpage
 
 
-def getTitle():
-    global book_title
+def getTitle(tmp_url=""):
+    global book_title, url
+    if tmp_url != "":
+        print(f"Using tmp_url [getTitle]: {tmp_url}")
+        url = tmp_url
     response = requests.get(url)
 
     hasParent = False
@@ -229,10 +232,15 @@ def getTitle():
 # Finds the link to the first chapter by navigating the title page
 
 
-def getChapList():
-    print(f"Chap list URL: {url}")
-    print(f"Finding chapters: {url}")
-    response = requests.get(url)
+def getChapList(tmp_url=""):
+    if tmp_url != "":
+        print(f"Chap list tmp_url: {tmp_url}")
+        print(f"Finding chapters: {tmp_url}")
+        response = requests.get(tmp_url)
+    else:
+        print(f"Chap list URL: {url}")
+        print(f"Finding chapters: {url}")
+        response = requests.get(url)
     if response.status_code == 200:
         soup = BeautifulSoup(response.text, 'html.parser')
         div = soup.find(chapter_list_html[0], chapter_list_html[1])
@@ -270,9 +278,12 @@ def lastChap(links):
 def downloadUnique(curChap, links):
     if lastChap(links) == curChap:
         return
-    for link in links[curChap:]:
-        response = requests.get(link)
-        downloadImages(link)
+    try:
+        for link in links[curChap:]:
+            response = requests.get(link)
+            downloadImages(link)
+    except Exception as e:
+        print(f"Error downloading images [downloadUnique]: {e}")
 
 
 # For testing (no download)
@@ -376,7 +387,10 @@ def getLastDownload():
 # Get the main chapter page link
 
 
-def getHomeLink():
+def getHomeLink(tmp_dl_path=""):
+    if tmp_dl_path != "":
+        dl_path = tmp_dl_path
+
     dl_path = os.getcwd() + distro_nav
 
     shortcut_file = dl_path
@@ -396,10 +410,10 @@ def getHomeLink():
         print(e)
 
 
-def getFileByExtension(ext):
-    for root, dirs, files in os.walk(dl_path):
+def getFileByExtension(ext, folder_path):
+    for root, dirs, files in os.walk(folder_path):
         for filename in files:
-            if filename.lower().endswith('.url'):
+            if filename.lower().endswith(ext):
                 return os.path.join(root, filename)
 
     print("No .url files found in the folder.")
@@ -409,18 +423,28 @@ def getFileByExtension(ext):
 # Check if homelink exists
 
 
-def checkHomeLink():
+def checkHomeLink(tmp_book_title=""):
     global url
-    log_path = dl_path + book_title + distro_nav
-    shortcut_file = getFileByExtension(".url")
+    if tmp_book_title != "":
+        log_path = dl_path + tmp_book_title + distro_nav
+    else:
+        log_path = dl_path + book_title + distro_nav
+        
+    print(f"\n[checkHomeLink] Using: {log_path}")
+    
+    shortcut_file = getFileByExtension(".url", log_path)
+    
+    print(f"[shortcut_file] set to: {shortcut_file}")
 
     with open(shortcut_file, 'r') as f:
         for line in f:
             shortcut_file_contents = line.strip()
+            print(f"Found [checkHomeLink:shortcut_file_contents]: {shortcut_file_contents}")
             if shortcut_file_contents.startswith('URL='):
                 break
 
     shortcut = shortcut_file_contents.replace("URL=", "")
+    print(f"Sending URL [checkHomeLink]\n: {shortcut}")
     url = shortcut
     return shortcut
 
@@ -461,24 +485,35 @@ def getLinksFromLog(book_dir):
     with open(cur_book_dir, 'r') as f:
         links = f.readlines()
     print("")
+    if len(links) == 0:
+        print("Error [getLinksFromLog]")
+        exit()
+        print(f"No links found [getLinksFromLog]: {links}")
+        tmp_url = checkHomeLink(book_dir)
+        print(f"[getLinksFromLog] getting: {tmp_url}")
+        tmp_links = getChapList(tmp_url)
+        print(f"Chapters obtianed [getLinksFromLog]: {tmp_links}\n")
+        return tmp_links[0]
+    print(f"Links Found [getLinksFromLog] sending: {links[0]}")
     return links[0]
 
 # Get the homepage URL by the last link on the list
 
 
-def getTopLink():
-    print(f"Finding head source of: {url}")
+def getTopLink(tmp_book_title=""):
+    print(f"Finding head source of [getTopLink]: {url}")
     old_url = url
 
-    tmp_home_link = checkHomeLink()
+    tmp_home_link = checkHomeLink(tmp_book_title)
 
     if url != old_url:
-        print(f"Head source found: {url}")
+        print(f"Head source found [getTopLink]: {url}")
         return url
 
     if tmp_home_link != False:
+        print(f"Using tmp_home_link [getTopLink]: {tmp_home_link}")
         return tmp_home_link
-    
+
     hasParent = False
     if len(top_link_html) >= 3:
         hasParent = True
@@ -498,7 +533,7 @@ def getTopLink():
             for link in links:
                 href = link.get('href')
                 linkList.append(href)
-            print(f"Found: {linkList[0]}")
+            print(f"Found [getTopLink]: {linkList[0]}")
             return linkList[0]
         else:
             print("firstChap: Missing div: Passing")
@@ -507,6 +542,7 @@ def getTopLink():
 
     home_link = getHomeLink()
     if home_link != "":
+        print(f"Using home_link [getTopLink]: {home_link}")
         return home_link
 
 
@@ -521,7 +557,8 @@ def downloadSource():
     links = getChapList()
     last_downlaod = getLastDownload()
     downloadUnique(last_downlaod, links)
-    print("---------------- No more chapters ----------------\n")
+    print(
+        f"---------------- No more chapters: {book_title} ----------------\n")
 
 
 def updateSource():
@@ -531,7 +568,9 @@ def updateSource():
     listDir()
     for i in range(len(book_titles)):
         url = getLinksFromLog(book_titles[i])
-        url = getTopLink()
+        print(f"URL set to: {url}")
+        url = getTopLink(book_titles[i])
+        print(f"URL set to again: {url}")
         downloadSource()
 
 
