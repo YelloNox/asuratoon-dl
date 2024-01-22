@@ -54,7 +54,7 @@ Options:
 
 -   [x] Test Linux
 -   [ ] Test Linux... Again...
--   [ ] Add support for more sources (might make a seperate script or repo) (In progress)
+-   [x] Add support for more sources (might make a seperate script or repo) (In progress)
 -   [ ] Add a network throttle (and/or network cap (and/or image cap))
 -   [ ] Add ".updateignore" to ignore specified books
 -   [ ] Add metadata to csv (If possible)
