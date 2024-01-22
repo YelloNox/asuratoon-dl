@@ -265,7 +265,7 @@ def getChapList(tmp_url=""):
 
     print(f"\nSeems like the URL is old or corrupted. Please enter a new URL for: {book_title}")
     resetChapterURLShortcut()
-    return getChapList()
+    return getChapList() # If broke, try again... 
 
 
 def resetChapterURLShortcut():
@@ -501,7 +501,7 @@ def getLinksFromLog(book_dir):
     print("")
     if len(links) == 0:
         print("Error [getLinksFromLog]")
-        exit()
+        exit() # YEAH, IM WORKING ON IT (note: work on this later)
         print(f"No links found [getLinksFromLog]: {links}")
         tmp_url = checkHomeLink(book_dir)
         print(f"[getLinksFromLog] getting: {tmp_url}")
