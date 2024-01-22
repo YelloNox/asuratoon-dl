@@ -229,13 +229,15 @@ def getTitle(tmp_url=""):
             try:
                 div = children[title_html[2]]
             except:
-                print(f"Failed to get title [getTitle:hasParent]: {title_html[2]}")
+                print(
+                    f"Failed to get title [getTitle:hasParent]: {title_html[2]}")
         if hasParent & hasAltChild:
             print(f"children [getTitle:hasAltChild]: {children}")
             try:
                 div = children[title_html[3]]
             except:
-                print(f"Failed to get title [getTitle:hasAltChild]: {title_html[3]}")
+                print(
+                    f"Failed to get title [getTitle:hasAltChild]: {title_html[3]}")
 
         book_title = div.text
         book_title = book_title.replace(" ", "-")
@@ -518,13 +520,13 @@ def getLinksFromLog(book_dir):
     print("")
     if len(links) == 0:
         print("Error [getLinksFromLog]")
-        exit()  # YEAH, IM WORKING ON IT (note: work on this later)
+        # YEAH, IM WORKING ON IT (note: work on this later) (note: Fixed... I think...)
         print(f"No links found [getLinksFromLog]: {links}")
         tmp_url = checkHomeLink(book_dir)
         print(f"[getLinksFromLog] getting: {tmp_url}")
         tmp_links = getChapList(tmp_url)
         print(f"Chapters obtianed [getLinksFromLog]: {tmp_links}\n")
-        return tmp_links[0]
+        return tmp_links
     print(f"Links Found [getLinksFromLog] sending: {links[0]}")
     return links[0]
 
