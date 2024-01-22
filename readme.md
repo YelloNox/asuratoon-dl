@@ -59,6 +59,7 @@ Options:
 -   [ ] Add ".updateignore" to ignore specified books
 -   [ ] Add metadata to csv (If possible)
 -   [ ] Add download option for cover
+-   [ ] If corrupted link is replaced, the program "ends" and needs to be relaunched. fix plz...
 
 > Sticky-Note For Later: https://pypi.org/project/pycbzhelper/
 
