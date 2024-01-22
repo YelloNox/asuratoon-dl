@@ -263,13 +263,13 @@ def getChapList(tmp_url=""):
     else:
         print("firstChap: Missing Button")
 
-    print(f"\nSeems like the URL is old or corrupted. Please enter a new URL for: {book_title}")
     resetChapterURLShortcut()
     return getChapList() # If broke, try again... 
 
 
 def resetChapterURLShortcut():
     global url
+    print(f"\nSeems like the URL is old or corrupted. Please enter a new URL for: {book_title}")
     url = input('Please enter new URL: ')
     createDir(True)
 
