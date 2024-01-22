@@ -141,7 +141,7 @@ def setSite():
     elif active_site == "mangaread":
         title_html = ('div', {'class': 'post-title'}, 1)
         chapter_list_html = ('ul', {'class': 'main'})
-        top_link_html = ('div', {'class': 'nav-next'})
+        top_link_html = ('ol', {'class': 'breadcrumb'}, 2)
         image_html = ('div', {'class': 'reading-content'})
         global_pattern = r'chapter-\d+'
         return
@@ -161,6 +161,7 @@ def createShortcut(path, forceRecreate=False):
     shortcut_path = os.path.join(path, shortcut_name)
     if forceRecreate:
         if os.path.exists(shortcut_path):
+            print(f"Removing shortcut: {shortcut_path}")
             os.remove(shortcut_path)
     try:
         with open(shortcut_path, "x") as url_shortcut:
@@ -197,7 +198,6 @@ def createDir(forceRecreateShortcut=False):
         exit()
     if forceRecreateShortcut:
         createShortcut(log_path, True)
-        exit()
     if create_link:
         createShortcut(log_path)
 
@@ -215,14 +215,28 @@ def getTitle(tmp_url=""):
     hasParent = False
     if len(title_html) >= 3:
         hasParent = True
+    hasAltChild = False
+    if len(title_html) >= 4:
+        hasAltChild = True
 
     if response.status_code == 200:
         soup = BeautifulSoup(response.text, 'html.parser')
         div = soup.find(title_html[0], title_html[1])
+
         if hasParent:
             children = div.find_all(recursive=False)
             print(f"children [getTitle:title_html]: {children}")
-            div = children[title_html[2]]
+            try:
+                div = children[title_html[2]]
+            except:
+                print(f"Failed to get title [getTitle:hasParent]: {title_html[2]}")
+        if hasParent & hasAltChild:
+            print(f"children [getTitle:hasAltChild]: {children}")
+            try:
+                div = children[title_html[3]]
+            except:
+                print(f"Failed to get title [getTitle:hasAltChild]: {title_html[3]}")
+
         book_title = div.text
         book_title = book_title.replace(" ", "-")
         book_title = book_title.replace("\n", "")
@@ -259,17 +273,20 @@ def getChapList(tmp_url=""):
                 linkList.append(href)
             return linkList
         else:
-            print("firstChap: Missing div")
+            print(
+                f"firstChap [chapter_list_html]: Missing div: {chapter_list_html}")
     else:
-        print("firstChap: Missing Button")
+        print(
+            f"firstChap [chapter_list_html]: Missing page items: {chapter_list_html}: URL: {url}")
 
     resetChapterURLShortcut()
-    return getChapList() # If broke, try again... 
+    return getChapList()  # If broke, try again...
 
 
 def resetChapterURLShortcut():
     global url
-    print(f"\nSeems like the URL is old or corrupted. Please enter a new URL for: {book_title}")
+    print(
+        f"\nSeems like the URL is old or corrupted. Please enter a new URL for: {url}")
     url = input('Please enter new URL: ')
     createDir(True)
 
@@ -501,7 +518,7 @@ def getLinksFromLog(book_dir):
     print("")
     if len(links) == 0:
         print("Error [getLinksFromLog]")
-        exit() # YEAH, IM WORKING ON IT (note: work on this later)
+        exit()  # YEAH, IM WORKING ON IT (note: work on this later)
         print(f"No links found [getLinksFromLog]: {links}")
         tmp_url = checkHomeLink(book_dir)
         print(f"[getLinksFromLog] getting: {tmp_url}")
