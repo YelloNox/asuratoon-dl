@@ -4,6 +4,8 @@
 
 If you find any bugs, issues or have a feature request, open a request. I will respond in "SOME" ammount of time... probably...
 
+> Update: I am back in school. I will keep in touch with updates, but not on top of them.
+
 ## 💸 Note
 
 Linux is back to testing phase... New changes might break some things...
