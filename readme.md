@@ -24,11 +24,11 @@ Linux is back to testing phase... New changes might break some things...
 
 Install and run:
 
-1. Clone this repo to desired directory: `git clone https://github.com/YelloNolo/asuratoon-dl`
+1. Clone this repo to desired directory: `git clone https://github.com/YelloNox/asuratoon-dl`
 2. Create venv env: `python -m venv venv`
 3. Activate venv: `.\venv\Scripts\activate.bat`
 4. Install requirements: `pip install -r requirements.txt`
-5. Run script: [#Usage](https://github.com/YelloNolo/asuratoon-dl?tab=readme-ov-file#Usage)
+5. Run script: [#Usage](https://github.com/YelloNox/asuratoon-dl?tab=readme-ov-file#Usage)
 
 ## 🪴 Usage
 
@@ -73,7 +73,7 @@ I do not want to burden the host of the server. They are allready doing a great 
 
 ### Will there be support for other sources?
 
-Maybe. I have no current plans, but I made the script flexable for more sources. If there are any requests, feel free to open a [discussion](https://github.com/YelloNolo/asuratoon-dl/discussions).
+Maybe. I have no current plans, but I made the script flexable for more sources. If there are any requests, feel free to open a [discussion](https://github.com/YelloNox/asuratoon-dl/discussions).
 
 ## 🌟 Thanks
 
